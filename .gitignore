@@ -126,7 +126,10 @@ celerybeat.pid
 
 # Environments
 .env
+mongo.env
 .venv
+*.env
+*.venv
 .nodeenv
 Scripts/
 env/
