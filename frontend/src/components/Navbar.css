@@ -1,0 +1,108 @@
+.navbar {
+  background-color: #333;
+  color: white;
+  position: sticky;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  max-width: 1200px; /* Optional: Constrain width for larger screens */
+  margin: 0 auto; /* Center the container */
+}
+
+.navbar-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.hamburger-menu {
+  /* This will ALWAYS be visible */
+  background: none;
+  border: none;
+  color: white;
+  font-size: 2rem; /* Slightly larger for easier tapping */
+  cursor: pointer;
+  padding: 5px; /* Add some padding around the icon */
+  transition: transform 0.3s ease;
+}
+
+.hamburger-menu:active {
+  transform: scale(0.95); /* Little feedback on press */
+}
+
+.nav-links {
+  /* Default state: hidden off-screen */
+  display: flex; /* Still Flexbox to manage internal list */
+  flex-direction: column; /* Stack links vertically */
+  align-items: center;
+  position: fixed; /* Fixed position relative to viewport */
+  top: 0;
+  right: -250px; /* Hidden off to the right */
+  width: 250px; /* Width of the side menu */
+  height: 100%; /* Full height of the viewport */
+  background-color: #444; /* Slightly different background for the menu */
+  padding: 60px 0 20px; /* Padding for content (top for title space) */
+  box-shadow: -3px 0 10px rgba(0, 0, 0, 0.3);
+  transition: right 0.3s ease-in-out; /* Smooth slide-in/out */
+  z-index: 999; /* Below the main navbar but above content */
+}
+
+.nav-links.open {
+  right: 0; /* Slide in when 'open' class is present */
+}
+
+.nav-links ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center the links within the menu */
+  width: 100%; /* Take full width of the menu panel */
+}
+
+.nav-links ul li {
+  width: 100%; /* Make list items take full width */
+  text-align: center; /* Center text within list items */
+  margin-bottom: 10px; /* Space between links */
+}
+
+.nav-links ul li a {
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 1rem 0; /* More vertical padding */
+  display: block; /* Make the whole area clickable */
+  transition: background-color 0.3s ease, color 0.3s ease;
+  width: 100%; /* Ensure link takes full width of li */
+}
+
+.nav-links ul li a:hover {
+  background-color: #666; /* Darker hover for menu items */
+  color: #fff;
+}
+
+/* Optional: Add a dimming overlay when menu is open */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+  z-index: 998; /* Below the menu, above content */
+  display: none; /* Hidden by default */
+}
+
+.overlay.active {
+  display: block; /* Show when menu is open */
+}
