@@ -1,0 +1,31 @@
+.app-footer {
+  background-color: #222; /* A dark background for the footer */
+  color: #eee; /* Light text color */
+  padding: 1.5rem 1rem;
+  text-align: center;
+  font-size: 0.9rem;
+  margin-top: 3rem; /* Add some space above the footer */
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow at the top */
+}
+
+.app-footer p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* Optional: Styles for additional links in the footer */
+.app-footer .footer-links {
+  margin-top: 10px;
+}
+
+.app-footer .footer-links a {
+  color: #a0c4ff; /* A lighter blue for links */
+  text-decoration: none;
+  margin: 0 10px;
+  transition: color 0.3s ease;
+}
+
+.app-footer .footer-links a:hover {
+  color: #fff;
+  text-decoration: underline;
+}
