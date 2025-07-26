@@ -1,11 +1,12 @@
-require('dotenv').config();              // Load .env variables
+// Load .env variables
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
 const app = express();
-app.use(express.json());                 // To parse JSON bodies
-app.use(cors());                         // To allow frontend requests
+app.use(express.json());
+app.use(cors());
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI)
