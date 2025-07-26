@@ -1,16 +1,50 @@
+/* src/index.css */
+
+/* --- Base HTML/Body Styles --- */
+/* These ensure the main document and root React div fill the viewport */
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  /* Remove flex properties from body to let App-layout manage the main layout */
+  /* display: flex; */
+  /* place-items: center; */
+  /* min-width: 320px; */ /* Keep if you want a minimum width for the entire page */
+  /* min-height: 100vh; */ /* App-layout will handle this */
+
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif; /* Use font from :root */
+  line-height: 1.6;
+  color: #333; /* Default body text color for light scheme */
+  background-color: #ffffff; /* Default body background for light scheme */
+
+  /* These are good to keep for global font rendering */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* --- Root Variables and Global Styles (from Vite template) --- */
+/* These define global variables and default styles for common elements */
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
+  /* color-scheme is good for dark mode preference */
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+
+  /* These colors will be overridden by the prefers-color-scheme media query
+     or by specific element styles like your Navbar/Footer.
+     Consider these as general defaults. */
+  color: #213547; /* Default text color for light theme */
+  background-color: #ffffff; /* Default background color for light theme */
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 a {
@@ -22,19 +56,6 @@ a:hover {
   color: #535bf2;
 }
 
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -42,7 +63,7 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: #f9f9f9; /* Light theme button background */
   cursor: pointer;
   transition: border-color 0.25s;
 }
@@ -54,15 +75,82 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-@media (prefers-color-scheme: light) {
+/* --- Dark Mode Preference --- */
+/* These styles apply if the user's system prefers a dark color scheme */
+@media (prefers-color-scheme: dark) {
   :root {
-    color: #213547;
-    background-color: #ffffff;
+    color: rgba(255, 255, 255, 0.87);
+    background-color: #242424;
+  }
+  body {
+    /* Ensure body background also changes for dark mode */
+    color: rgba(255, 255, 255, 0.87);
+    background-color: #242424;
   }
   a:hover {
     color: #747bff;
   }
   button {
-    background-color: #f9f9f9;
+    background-color: #1a1a1a; /* Dark theme button background */
   }
+}
+
+/* --- App-Specific Layout & General Styles (Often in App.css) --- */
+/* It's generally better to put these in App.css, but for this fix, we'll keep them here
+   to ensure the correct overriding/combination. */
+.App-layout {
+  display: flex;
+  flex-direction: column; /* Arrange children (Navbar, Main, Footer) vertically */
+  min-height: 100vh; /* Ensure it's at least the full viewport height */
+  /* Important: App-layout should handle its own overflow if content is too long. */
+  overflow-y: auto; /* Allows the content to scroll if it overflows the viewport */
+  /* We removed overflow: hidden from html/body/#root, so this becomes effective. */
+}
+
+.App-content {
+  flex-grow: 1; /* This is the key! It makes the main content area expand */
+  padding: 20px; /* Add some padding to your main content */
+  box-sizing: border-box; /* Include padding in element's total width and height */
+}
+
+h1 {
+  /* Using your previous h1 styles that fit the app better than :root's h1 defaults */
+  font-size: 3.2em;
+  line-height: 1.1;
+  text-align: center;
+  color: #2c3e50; /* A specific color for your app's main heading */
+  margin-bottom: 2rem;
+}
+
+section {
+  margin-bottom: 2rem;
+}
+
+hr {
+  border: 0;
+  height: 1px;
+  background-color: #ccc;
+  margin: 2rem 0;
+}
+
+/* --- Component-Specific Styles (Often in Component.css) --- */
+/* These should ideally be in Navbar.css and Footer.css, but keeping them here
+   for context from your provided code. */
+.navbar {
+  background-color: #333;
+  color: white;
+  position: sticky;
+  top: 0; /* Important for sticky behavior */
+  width: 100%;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.app-footer {
+  background-color: #222;
+  color: #eee;
+  padding: 1.5rem 1rem;
+  text-align: center;
+  font-size: 0.9rem;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
 }

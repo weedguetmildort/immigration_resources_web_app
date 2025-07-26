@@ -1,0 +1,39 @@
+.custom-button {
+  /* Inherit some base button styles from index.css, then customize */
+  background-color: #007bff; /* A nice primary blue */
+  color: white;
+  border: 1px solid #007bff;
+  padding: 0.8em 1.8em; /* Slightly more padding */
+  font-size: 1.1em; /* Slightly larger text */
+  font-weight: 600; /* Bolder text */
+  border-radius: 5px; /* Slightly rounded corners */
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease,
+    transform 0.2s ease;
+  display: inline-block; /* Allows for margin, padding, etc. */
+  text-align: center;
+  text-decoration: none; /* In case it's used as a link-button */
+}
+
+.custom-button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+  border-color: #0056b3;
+  transform: translateY(-2px); /* Slight lift effect */
+}
+
+.custom-button:active {
+  background-color: #004085; /* Even darker on click */
+  border-color: #004085;
+  transform: translateY(0); /* Press down effect */
+}
+
+/* Optional: Add a style for a secondary button if needed */
+.custom-button.secondary {
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
+.custom-button.secondary:hover {
+  background-color: #5a6268;
+  border-color: #545b62;
+}
