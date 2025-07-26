@@ -1,10 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from 'react';
+import axios from 'axios'; // Added axios
 import Navbar from "./components/Navbar"; // Import the new Navbar component
 import Footer from "./components/Footer";
 import Button from "./components/Button";
 import "./App.css"; // Assuming you'll have some basic styling
 
 function App() {
+  const [question, setQuestion] = useState(null);
+  const [currentQuestionId, setCurrentQuestionId] = useState('q1'); // State to track current question
+
+  useEffect(() => {
+    // Fetch question based on currentQuestionId
+    axios.get(`http://localhost:5000/api/questions/${currentQuestionId}`)
+      .then(res => setQuestion(res.data))
+      .catch(err => {
+        console.error("Error fetching question:", err);
+        setQuestion(null); // Clear question on error
+      });
+  }, [currentQuestionId]); // Rerun effect when currentQuestionId changes
+
+  const handleOptionClick = (nextId) => {
+    if (nextId) {
+      setCurrentQuestionId(nextId); // Update state to fetch the next question
+    } else {
+      alert("End of path or no next question defined for this option.");
+      // You might want to display results or a "restart" button here
+      setQuestion(null); // Optionally clear the question if it's an end path
+      setCurrentQuestionId('q1'); // Or reset to start for demonstration
+    }
+  };
+  
   const handleGetStartedClick = () => {
     // You can add logic here for what happens when the button is clicked
     // For example, scroll to a specific section, open a modal, or navigate
@@ -14,21 +39,50 @@ function App() {
       .getElementById("section-one")
       ?.scrollIntoView({ behavior: "smooth" });
   };
+
+
+
   return (
     <div className="App-layout">
       <Navbar />
 
       <main className="App-content">
-        <h1>Immigration Emergency Plan Webpage</h1>
+        {/* The main title and intro now reflect the dynamic content focus */}
+        <h1>Questions</h1>
+        <p style={{ textAlign: 'center', marginBottom: '2rem' }}>
+          Navigate your immigration status with our interactive guide.
+        </p>
 
-        <div style={{ textAlign: "center", marginBottom: "3rem" }}>
-          <p>
-            Find essential information and resources to help you prepare and
-            respond to immigration emergencies. Your safety and well-being are
-            our priority.
-          </p>
-          <Button onClick={handleGetStartedClick}>Get Started</Button>
-        </div>
+        {/* This is the integrated question display area */}
+        <section id="question-section" style={{ textAlign: 'center', maxWidth: '800px', margin: '0 auto' }}>
+          {question ? (
+            <div>
+              <h2 style={{ color: '#2c3e50', marginBottom: '1.5rem' }}>{question.question}</h2>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', alignItems: 'center' }}>
+                {question.options.map((opt, idx) => (
+                  <Button
+                    key={idx}
+                    onClick={() => handleOptionClick(opt.nextId)}
+                    // You might add different classes based on option type if needed
+                    // className={opt.type === 'primary' ? '' : 'secondary'}
+                  >
+                    {opt.label}
+                  </Button>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div>
+              <p>Loading questions...</p>
+              {/* Maybe show the Get Started button only if nothing is loaded initially */}
+              {!question && (
+                <Button onClick={handleGetStartedClick}>
+                  Begin Guide
+                </Button>
+              )}
+            </div>
+          )}
+        </section>
 
         <hr />
 
