@@ -19,15 +19,23 @@ function App() {
   const [finalCollectedTags, setFinalCollectedTags] = useState([]);
 
   // Navigation function
-  const navigateTo = (page, tags = []) => {
-    console.log(
-      "App.jsx: navigateTo called with page:",
-      page,
-      "and tags:",
-      tags
-    );
-    // Store tags if navigating to summary
-    setFinalCollectedTags(tags);
+  const navigateTo = (page, tagsParam = []) => {
+    let actualTags = tagsParam;
+    if (typeof tagsParam === "function") {
+      // Execute the function to get the latest tags
+      actualTags = tagsParam();
+      console.log(
+        "App.jsx DEBUG: navigateTo received a function for tags. Executed, got:",
+        actualTags
+      );
+    } else {
+      console.log(
+        "App.jsx DEBUG: navigateTo received direct tags array:",
+        actualTags
+      );
+    }
+
+    setFinalCollectedTags(actualTags);
     setCurrentPage(page);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -101,7 +109,9 @@ function App() {
             onNavigateToSummary={() =>
               navigateTo("summary", finalCollectedTags)
             }
-            onQuizCompleteWithTags={(tags) => navigateTo("summary", tags)}
+            onQuizCompleteWithTags={(getTagsFn) =>
+              navigateTo("summary", getTagsFn)
+            }
           />
         )}
 

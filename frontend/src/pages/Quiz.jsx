@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Button from "../components/Button";
 
-function Quiz({ onQuizEnd, onBackToHome, onNavigateToSummary }) {
+function Quiz({ onQuizEnd, onBackToHome, onNavigateToSummary, onQuizCompleteWithTags }) {
   const [question, setQuestion] = useState(null);
   const [currentQuestionId, setCurrentQuestionId] = useState("q1");
   const [loading, setLoading] = useState(true);
@@ -11,11 +11,10 @@ function Quiz({ onQuizEnd, onBackToHome, onNavigateToSummary }) {
 
   // Reset collectedTags when quiz starts (q1 is loaded)
   useEffect(() => {
-    if (currentQuestionId === "q1" && !loading && !question) {
-      // Check for initial load/reset
+    if (currentQuestionId === 'q1') {
       setCollectedTags(new Set());
     }
-  }, [currentQuestionId, loading, question]);
+  }, [currentQuestionId]);
 
   // Effect to fetch questions based on currentQuestionId
   useEffect(() => {
@@ -43,13 +42,20 @@ function Quiz({ onQuizEnd, onBackToHome, onNavigateToSummary }) {
         // Redirect automatically to summary if the error is 'No more questions found'
         if (err.response && err.response.status === 404) {
           console.log("Quiz sequence ended by 404. Redirecting to summary.");
-          if (onNavigateToSummary) {
+          if (onQuizCompleteWithTags) {
+                onQuizCompleteWithTags(() => Array.from(collectedTags));
+            }
+          else if (onNavigateToSummary) {
             // Go to summary page
             onNavigateToSummary();
           }
+          else {
+                console.warn("QuizPage DEBUG: onQuizCompleteWithTags prop is undefined!");
+                setError("Quiz completed, but couldn't navigate to summary. Check App.jsx setup.");
+            }
         }
       });
-  }, [currentQuestionId, onNavigateToSummary, collectedTags]);
+  }, [currentQuestionId, onNavigateToSummary, onQuizCompleteWithTags]);
 
   // Function to handle option clicks and advance the quiz
   const handleOptionClick = (nextId, chosenOptionLabel) => {

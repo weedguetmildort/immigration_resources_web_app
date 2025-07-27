@@ -8,6 +8,8 @@ function Summary({ onNavigate, collectedTags }) {
   const [loadingResources, setLoadingResources] = useState(true);
   const [resourceError, setResourceError] = useState(null);
 
+  console.log("SummaryPage: Received collectedTags prop:", collectedTags);
+
   useEffect(() => {
     // Fetch only if there are tags or if we want to show all if no specific tags
     if (collectedTags && collectedTags.length > 0) {
@@ -90,7 +92,9 @@ function Summary({ onNavigate, collectedTags }) {
                   {resource.organization}
                 </p>
                 <p style={{ fontSize: "0.85em", color: "#666" }}>
-                  {resource.description.substring(0, 150)}...
+                  {resource.description && resource.description.length > 150
+                    ? "..."
+                    : ""}
                 </p>{" "}
                 {/* Truncate description */}
                 {resource.contact?.website && (
@@ -117,7 +121,8 @@ function Summary({ onNavigate, collectedTags }) {
                         marginTop: "10px",
                       }}
                     >
-                      Tags: {resource.resource_tags.join(", ")}
+                      Tags: {(resource.resource_tags || []).join(", ")}{" "}
+                      {/* Ensure it's an array before joining */}
                     </div>
                   )}
               </div>

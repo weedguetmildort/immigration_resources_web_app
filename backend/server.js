@@ -91,6 +91,73 @@ mongoose
   .connect(MONGODB_URI)
   .then(() => {
     console.log("MongoDB connected successfully!");
+
+    // API Routes
+    // Get a specific question by its question_order
+    app.get("/api/questions/:question_order_id", async (req, res) => {
+      try {
+        // Get the ID from the URL parameter
+        const { question_order_id } = req.params;
+
+        // Find the question in the database
+        const questionDoc = await Question.findOne({
+          question_order: question_order_id,
+        });
+
+        if (!questionDoc) {
+          return res
+            .status(404)
+            .json({ message: "No more questions found for this sequence." });
+        }
+
+        // Generate 'Yes' and 'No' options
+        const nextQuestionId = getNextSequentialQuestionId(question_order_id);
+
+        const generatedOptions = [
+          { label: "Yes", nextId: nextQuestionId },
+          { label: "No", nextId: nextQuestionId },
+        ];
+
+        // Send the constructed question object back to the frontend
+        res.json({
+          id: questionDoc.question_order,
+          question: questionDoc.question,
+          options: generatedOptions,
+          resource_tags: questionDoc.resource_tags || [],
+        });
+      } catch (error) {
+        console.error("Error fetching question:", error);
+        res.status(500).json({ message: "Server error" });
+      }
+    });
+
+    // Filter resources by tags
+    app.post("/api/resources/filter", async (req, res) => {
+      try {
+        const { tags } = req.body;
+
+        if (!tags || !Array.isArray(tags) || tags.length === 0) {
+          // Return all resources or an empty array, if no tags are provided
+          const allResources = await Resource.find({});
+          return res.json(allResources);
+        }
+
+        // Find resources that have at least one of the provided tags
+        const resources = await Resource.find({ resource_tags: { $in: tags } });
+
+        // Send the found resources as JSON
+        res.json(resources);
+      } catch (error) {
+        console.error("Error fetching resources by tags:", error);
+        res.status(500).json({ message: "Server error" });
+      }
+    });
+
+    // Confirm server is running
+    app.get("/", (req, res) => {
+      res.send("Immigration Emergency Plan Backend API is running!");
+    });
+
     // Start the server ONLY after successful database connection
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
@@ -104,69 +171,3 @@ mongoose
     // Exit process if DB connection fails
     process.exit(1);
   });
-
-// API Routes
-// Get a specific question by its question_order
-app.get("/api/questions/:question_order_id", async (req, res) => {
-  try {
-    // Get the ID from the URL parameter
-    const { question_order_id } = req.params;
-
-    // Find the question in the database
-    const questionDoc = await Question.findOne({
-      question_order: question_order_id,
-    });
-
-    if (!questionDoc) {
-      return res
-        .status(404)
-        .json({ message: "No more questions found for this sequence." });
-    }
-
-    // Generate 'Yes' and 'No' options
-    const nextQuestionId = getNextSequentialQuestionId(question_order_id);
-
-    const generatedOptions = [
-      { label: "Yes", nextId: nextQuestionId },
-      { label: "No", nextId: nextQuestionId },
-    ];
-
-    // Send the constructed question object back to the frontend
-    res.json({
-      id: questionDoc.question_order,
-      question: questionDoc.question,
-      options: generatedOptions,
-      resource_tags: questionDoc.resource_tags || [],
-    });
-  } catch (error) {
-    console.error("Error fetching question:", error);
-    res.status(500).json({ message: "Server error" });
-  }
-});
-
-// Filter resources by tags
-app.post("/api/resources/filter", async (req, res) => {
-  try {
-    const { tags } = req.body;
-
-    if (!tags || !Array.isArray(tags) || tags.length === 0) {
-      // Return all resources or an empty array, if no tags are provided
-      const allResources = await Resource.find({});
-      return res.json(allResources);
-    }
-
-    // Find resources that have at least one of the provided tags
-    const resources = await Resource.find({ resource_tags: { $in: tags } });
-
-    // Send the found resources as JSON
-    res.json(resources);
-  } catch (error) {
-    console.error("Error fetching resources by tags:", error);
-    res.status(500).json({ message: "Server error" });
-  }
-});
-
-// Confirm server is running
-app.get("/", (req, res) => {
-  res.send("Immigration Emergency Plan Backend API is running!");
-});
