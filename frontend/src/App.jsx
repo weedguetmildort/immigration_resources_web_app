@@ -11,6 +11,7 @@ import FAQ from "./pages/FAQ";
 import GiveBack from "./pages/GiveBack";
 import Summary from "./pages/Summary";
 import "./App.css";
+import pic1family from "./assets/pic1family.jpg";
 
 function App() {
   // State to manage which page is currently displayed
