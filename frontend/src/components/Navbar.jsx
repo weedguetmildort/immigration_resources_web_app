@@ -1,11 +1,16 @@
 import React, { useState } from "react";
 import "./Navbar.css";
 
-function Navbar() {
+function Navbar({ onNavigate }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
+  };
+
+  const handleNavLinkClick = (page) => {
+    onNavigate(page); // Call the navigate function passed from App.jsx
+    setIsOpen(false); // Close the menu after clicking a link
   };
 
   return (
@@ -17,40 +22,23 @@ function Navbar() {
         </button>
         <nav className={`nav-links ${isOpen ? "open" : ""}`}>
           <ul>
+            {/* Update links to use onClick and the onNavigate prop */}
             <li>
-              <a href="#home" onClick={() => setIsOpen(false)}>
-                Home
-              </a>
+              <a onClick={() => handleNavLinkClick("home")}>Home</a>
             </li>
             <li>
-              <a href="#section-one" onClick={() => setIsOpen(false)}>
-                Immediate Actions
-              </a>
+              <a onClick={() => handleNavLinkClick("about")}>About Us</a>
             </li>
             <li>
-              <a href="#section-two" onClick={() => setIsOpen(false)}>
-                Resources & Support
-              </a>
+              <a onClick={() => handleNavLinkClick("faq")}>FAQ</a>
             </li>
             <li>
-              <a href="#contact" onClick={() => setIsOpen(false)}>
-                Contact Us
-              </a>
-            </li>
-            <li>
-              <a href="#contact" onClick={() => setIsOpen(false)}>
-                About Us
-              </a>
-            </li>
-            <li>
-              <a href="#contact" onClick={() => setIsOpen(false)}>
+              <a onClick={() => handleNavLinkClick("privacy")}>
                 Privacy Policy
               </a>
             </li>
             <li>
-              <a href="#contact" onClick={() => setIsOpen(false)}>
-                FAQ
-              </a>
+              <a onClick={() => handleNavLinkClick("contact")}>Contact Us</a>
             </li>
           </ul>
         </nav>
