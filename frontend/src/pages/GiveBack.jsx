@@ -1,5 +1,6 @@
 import React from "react";
 import Button from "../components/Button";
+import volunteer from "../assets/volunteer.jpg"
 
 function GiveBack({ onNavigate }) {
   return (
@@ -47,25 +48,33 @@ function GiveBack({ onNavigate }) {
         </li>
       </ul>
 
-      <h2 style={{ marginTop: "2.5rem" }}>Ways to Give Back:</h2>
+      <h2 style={{ marginTop: "2.5rem" }}>Other Ways to Give Back:</h2>
       <div
         style={{
           display: "flex",
-          flexDirection: "column",
+          flexDirection: "row",
           gap: "20px",
-          alignItems: "center",
+          alignItems: "flex-start",
           marginTop: "30px",
         }}
       >
+        {/* Volunteer Image Icon on the left*/}
+        <img 
+          src={volunteer}
+          alt="VolunteerIcon"
+          style={{ width: "300px", height: "auto", borderRadius: "5px" }}
+        />
+
+        {/* Text content on the right*/}
         <p style={{ marginTop: "20px", fontSize: "0.9em" }}>
-          Here are some links: <br />
-          <a href="https://www.ymca.org/get-involved/volunteer">YMCA</a> <br />
+          Links to nationwide volunteer opportunities to help support your community: <br /> <br />
+          <a href="https://www.ymca.org/get-involved/volunteer">Volunteer at Your Local YMCA</a> <br />
           <a href="https://www.volunteer.gov/s/global-search/FILTERNPS">
-            Volunteer
+            Public Service Opportunities
           </a>{" "}
           <br />
           <a href="https://www.nature.org/en-us/get-involved/how-to-help/volunteer/">
-            Nature
+            Volunteer in Nature
           </a>
         </p>
       </div>

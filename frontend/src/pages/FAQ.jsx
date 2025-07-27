@@ -35,7 +35,7 @@ function FAQ() {
     <section
       style={{ maxWidth: "800px", margin: "0 auto", padding: "40px 20px" }}
     >
-      <h1>Frequently Asked Questions (FAQ)</h1>
+      <h1>Frequently Asked Questions (FAQ) </h1>
       <div style={{ marginTop: "30px" }}>
         {faqs.map((faq, index) => (
           <div
