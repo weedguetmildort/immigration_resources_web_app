@@ -10,8 +10,10 @@ function Navbar({ onNavigate }) {
   };
 
   const handleNavLinkClick = (page) => {
-    onNavigate(page); // Call the navigate function passed from App.jsx
-    setIsOpen(false); // Close the menu after clicking a link
+    // Call the navigate function passed from App.jsx
+    onNavigate(page);
+    // Close the menu after clicking a link
+    setIsOpen(false);
   };
 
   return (

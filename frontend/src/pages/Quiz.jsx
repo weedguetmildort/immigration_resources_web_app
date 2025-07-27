@@ -1,42 +1,82 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Button from "../components/Button"; // Assuming Button component is in 'src' or 'src/components'
+import Button from "../components/Button";
 
-function Quiz({ onQuizEnd, onBackToHome }) {
-  // Added props for navigation
+function Quiz({ onQuizEnd, onBackToHome, onNavigateToSummary }) {
   const [question, setQuestion] = useState(null);
   const [currentQuestionId, setCurrentQuestionId] = useState("q1");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [collectedTags, setCollectedTags] = useState(new Set());
 
+  // Reset collectedTags when quiz starts (q1 is loaded)
   useEffect(() => {
+    if (currentQuestionId === "q1" && !loading && !question) {
+      // Check for initial load/reset
+      setCollectedTags(new Set());
+    }
+  }, [currentQuestionId, loading, question]);
+
+  // Effect to fetch questions based on currentQuestionId
+  useEffect(() => {
+    // Fetch only if the quiz isn't already completed
     setLoading(true);
     setError(null);
+    // Clear previous question while loading next one
+    setQuestion(null);
+
     axios
       .get(`http://localhost:5000/api/questions/${currentQuestionId}`)
       .then((res) => {
         setQuestion(res.data);
         setLoading(false);
+        // Clear any previous errors
+        setError(null);
       })
       .catch((err) => {
         console.error("Error fetching question:", err);
-        setError("Failed to load question. Please try again later.");
+        setError("Failed to load question. Please try again or go back home.");
         setLoading(false);
-        setQuestion(null); // Clear previous question on error
-      });
-  }, [currentQuestionId]);
+        // Ensure question is null on error
+        setQuestion(null);
 
-  const handleOptionClick = (nextId) => {
+        // Redirect automatically to summary if the error is 'No more questions found'
+        if (err.response && err.response.status === 404) {
+          console.log("Quiz sequence ended by 404. Redirecting to summary.");
+          if (onNavigateToSummary) {
+            // Go to summary page
+            onNavigateToSummary();
+          }
+        }
+      });
+  }, [currentQuestionId, onNavigateToSummary, collectedTags]);
+
+  // Function to handle option clicks and advance the quiz
+  const handleOptionClick = (nextId, chosenOptionLabel) => {
+    // Collect tags if the chosen option is 'Yes' and the current question has resource_tags
+    if (
+      chosenOptionLabel === "Yes" &&
+      question &&
+      question.resource_tags &&
+      question.resource_tags.length > 0
+    ) {
+      setCollectedTags(
+        (prevTags) => new Set([...prevTags, ...question.resource_tags])
+      );
+      // Debug
+      console.log("Collected tags so far:", Array.from(collectedTags));
+    }
+
     if (nextId) {
       setCurrentQuestionId(nextId);
     } else {
-      // This is the end of a path
-      alert("End of the guide. Thank you for participating!");
-      if (onQuizEnd) {
-        onQuizEnd(); // Notify parent (App.jsx) that quiz has ended
-      }
+      console.log(
+        "QuizPage: End of local path (nextId is null). Expecting 404 from server."
+      );
     }
   };
+
+  // Render conditional logic
 
   if (loading) {
     return (
@@ -48,10 +88,29 @@ function Quiz({ onQuizEnd, onBackToHome }) {
 
   if (error) {
     return (
-      <div style={{ textAlign: "center", padding: "50px", color: "red" }}>
+      <section
+        style={{
+          textAlign: "center",
+          padding: "50px",
+          color: "red",
+          maxWidth: "800px",
+          margin: "0 auto",
+        }}
+      >
         <p>{error}</p>
-        <Button onClick={onBackToHome}>Back to Home</Button>
-      </div>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            gap: "15px",
+            marginTop: "20px",
+          }}
+        >
+          <Button className="secondary" onClick={onBackToHome}>
+            Back to Home
+          </Button>
+        </div>
+      </section>
     );
   }
 
@@ -65,11 +124,12 @@ function Quiz({ onQuizEnd, onBackToHome }) {
         padding: "20px 0",
       }}
     >
-      <h1>StatusSafe Guide</h1> {/* Title for the quiz page */}
+      <h1>StatusSafe Guide</h1>
       <p style={{ marginBottom: "2rem" }}>
         Answer the questions to navigate to the most relevant information for
         your situation.
       </p>
+
       {question ? (
         <div>
           <h2 style={{ color: "#2c3e50", marginBottom: "1.5rem" }}>
@@ -84,7 +144,12 @@ function Quiz({ onQuizEnd, onBackToHome }) {
             }}
           >
             {question.options.map((opt, idx) => (
-              <Button key={idx} onClick={() => handleOptionClick(opt.nextId)}>
+              <Button
+                key={idx}
+                onClick={() => handleOptionClick(opt.nextId, opt.label)}
+              >
+                {" "}
+                {/* Pass opt.label */}
                 {opt.label}
               </Button>
             ))}
@@ -96,7 +161,7 @@ function Quiz({ onQuizEnd, onBackToHome }) {
           </div>
         </div>
       ) : (
-        <p>No question available. Please try again.</p> // Should ideally not happen if loading/error states are handled
+        <p>No question data available.</p>
       )}
     </section>
   );
