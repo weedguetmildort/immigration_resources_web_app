@@ -18,6 +18,17 @@
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
+.family-icon {
+  width: 600px;
+  height: 250px;
+  vertical-align: middle;
+}
+
+.hands-icon {
+  width: 200px;
+  height: 180px;
+}
+
 @keyframes logo-spin {
   from {
     transform: rotate(0deg);

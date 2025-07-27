@@ -1,4 +1,5 @@
 import React from "react";
+import hands from "../assets/hands.jpg";
 
 function AboutUs() {
   return (
@@ -26,6 +27,11 @@ function AboutUs() {
         has immediate access to reliable information and support to protect
         their well-being and make informed decisions.
       </p>
+
+      <div className="image-container">
+              <img src={hands} alt="hands" className="hands-icon" />
+      </div>
+
       <h2>Our Commitment</h2>
       <ul>
         <li>Providing accurate and up-to-date information.</li>

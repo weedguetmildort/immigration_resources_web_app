@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./Navbar.css";
+import pic3clipboard from "../assets/pic3clipboard.png"; // Adjust the path as necessary  
 
 function Navbar({ onNavigate }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,7 +17,8 @@ function Navbar({ onNavigate }) {
   return (
     <header className="navbar">
       <div className="navbar-container">
-        <div className="navbar-title">Immigration Emergency Plan</div>
+        <div className="navbar-title"><img src={pic3clipboard} alt="Emergency Icon" className="navbar-icon" /> Immigration Emergency Plan
+        </div>
         <button className="hamburger-menu" onClick={toggleMenu}>
           ☰
         </button>

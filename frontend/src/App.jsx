@@ -10,6 +10,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import FAQ from "./pages/FAQ";
 import GiveBack from "./pages/GiveBack";
 import "./App.css"; // Assuming you'll have some basic styling
+import pic1family from "./assets/pic1family.jpg"; // Adjust the path as necessary
 
 function App() {
   // State to manage which page is currently displayed
@@ -58,6 +59,12 @@ function App() {
                 for immediate assistance.
               </p>
             </section>
+
+            <hr />
+
+            <div className="image-container">
+              <img src={pic1family} alt="family" className="family-icon" />
+            </div>
 
             <hr />
 
