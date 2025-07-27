@@ -20,7 +20,6 @@ function App() {
 
   // Generic navigation function
   const navigateTo = (page) => {
-    
     setCurrentPage(page);
     // Optional: Scroll to top of the page when navigating
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -97,48 +96,3 @@ function App() {
 }
 
 export default App;
-
-{
-  /* <main className="App-content">
-        {currentPage === "home" && (
-          // --- Home Page Content ---
-          <>
-            <h1>Let Us Create Your Immigration Emergency Plan</h1>
-            <div style={{ textAlign: "center", marginBottom: "3rem" }}>
-              <p>
-                Find essential information and resources to help you prepare and
-                respond to immigration emergencies. Your safety and well-being
-                are our priority.
-              </p>
-              <Button onClick={handleGetStartedClick}>Get Started</Button>
-            </div>
-
-            <hr />
-
-            <section id="section-one" className="section-one">
-              <h2>Immediate Actions</h2>
-              <p>
-                
-              </p>
-            </section>
-
-            <hr />
-
-            <section id="section-two" className="section-two">
-              <h2>Resources & Support</h2>
-              <p>
-
-              </p>
-            </section>
-          </>
-        )}
-
-        {currentPage === "quiz" && (
-          // --- Quiz Page Content ---
-          <Quiz
-            onQuizEnd={handleBackToHome} // Go back to home when quiz ends (no nextId)
-            onBackToHome={handleBackToHome} // Allow exiting quiz anytime
-          />
-        )}
-      </main> */
-}
