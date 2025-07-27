@@ -40,6 +40,9 @@ function Navbar({ onNavigate }) {
             <li>
               <a onClick={() => handleNavLinkClick("contact")}>Contact Us</a>
             </li>
+            <li>
+              <a onClick={() => handleNavLinkClick("giveback")}>Give Back</a>
+            </li>
           </ul>
         </nav>
       </div>
