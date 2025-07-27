@@ -8,6 +8,7 @@ import ContactUs from "./pages/ContactUs"; // Adjust path if pages are in a subf
 import AboutUs from "./pages/AboutUs";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import FAQ from "./pages/FAQ";
+import GiveBack from "./pages/GiveBack";
 import "./App.css"; // Assuming you'll have some basic styling
 
 function App() {
@@ -88,6 +89,7 @@ function App() {
         {currentPage === "about" && <AboutUs />}
         {currentPage === "privacy" && <PrivacyPolicy />}
         {currentPage === "faq" && <FAQ />}
+        {currentPage === 'giveback' && <GiveBack onNavigate={navigateTo} />}
       </main>
 
       <Footer />
