@@ -24,4 +24,5 @@ This command will download and install the latest required dependencies for the 
 
 ```shell
 pip install requirements.txt
+nodeenv -p
 ```
