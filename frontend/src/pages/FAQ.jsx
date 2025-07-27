@@ -1,7 +1,7 @@
 import React from "react";
 
 function FAQ() {
-  // A simple way to manage collapsible FAQ items if desired
+  // Manage collapsible FAQ items if desired
   const [openIndex, setOpenIndex] = React.useState(null);
 
   const faqs = [

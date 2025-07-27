@@ -1,28 +1,33 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Navbar from "./components/Navbar"; // Import the new Navbar component
+import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Button from "./components/Button";
 import Quiz from "./pages/Quiz";
-import ContactUs from "./pages/ContactUs"; // Adjust path if pages are in a subfolder
+import ContactUs from "./pages/ContactUs";
 import AboutUs from "./pages/AboutUs";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import FAQ from "./pages/FAQ";
 import GiveBack from "./pages/GiveBack";
-import "./App.css"; // Assuming you'll have some basic styling
+import Summary from "./pages/Summary";
+import "./App.css";
 
 function App() {
   // State to manage which page is currently displayed
   const [currentPage, setCurrentPage] = useState("home"); // 'home' or 'quiz'
+  const [finalCollectedTags, setFinalCollectedTags] = useState([]);
 
-  const handleGetStartedClick = () => {
-    setCurrentPage("quiz"); // Navigate to the quiz page
-  };
-
-  // Generic navigation function
-  const navigateTo = (page) => {
+  // Navigation function
+  const navigateTo = (page, tags = []) => {
+    console.log(
+      "App.jsx: navigateTo called with page:",
+      page,
+      "and tags:",
+      tags
+    );
+    // Store tags if navigating to summary
+    setFinalCollectedTags(tags);
     setCurrentPage(page);
-    // Optional: Scroll to top of the page when navigating
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -31,8 +36,9 @@ function App() {
       <Navbar onNavigate={navigateTo} />
 
       <main className="App-content">
+        {console.log("App.jsx: Rendering page:", currentPage)}
+
         {currentPage === "home" && (
-          // --- Home Page Content ---
           <>
             <h1>Immigration Emergency Plan Webpage</h1>
             <div style={{ textAlign: "center", marginBottom: "3rem" }}>
@@ -41,8 +47,13 @@ function App() {
                 respond to immigration emergencies. Your safety and well-being
                 are our priority.
               </p>
-              <Button onClick={() => navigateTo("quiz")}>Get Started</Button>
+              <Button onClick={() => navigateTo("quiz", [])}>
+                {" "}
+                {/* Reset tags when starting quiz */}
+                Get Started
+              </Button>
             </div>
+
             <hr />
 
             <section id="section-one" className="section-one">
@@ -58,9 +69,7 @@ function App() {
                 for immediate assistance.
               </p>
             </section>
-
             <hr />
-
             <section id="section-two" className="section-two">
               <h2>Resources & Support</h2>
               <p>
@@ -78,18 +87,26 @@ function App() {
         )}
 
         {currentPage === "quiz" && (
-          // --- Quiz Page Content ---
           <Quiz
-            onQuizEnd={() => navigateTo("home")} // Go back to home when quiz ends (no nextId)
-            onBackToHome={() => navigateTo("home")} // Allow exiting quiz anytime
+            onBackToHome={() => navigateTo("home")}
+            // Pass current tags on standard summary nav
+            onNavigateToSummary={() =>
+              navigateTo("summary", finalCollectedTags)
+            }
+            onQuizCompleteWithTags={(tags) => navigateTo("summary", tags)}
           />
+        )}
+
+        {currentPage === "summary" && (
+          // Pass the collected tags to the SummaryPage
+          <Summary onNavigate={navigateTo} collectedTags={finalCollectedTags} />
         )}
 
         {currentPage === "contact" && <ContactUs />}
         {currentPage === "about" && <AboutUs />}
         {currentPage === "privacy" && <PrivacyPolicy />}
         {currentPage === "faq" && <FAQ />}
-        {currentPage === 'giveback' && <GiveBack onNavigate={navigateTo} />}
+        {currentPage === "giveback" && <GiveBack onNavigate={navigateTo} />}
       </main>
 
       <Footer />

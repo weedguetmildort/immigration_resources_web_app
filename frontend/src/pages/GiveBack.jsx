@@ -1,8 +1,7 @@
 import React from "react";
-import Button from "../components/Button"; // Assuming your Button component is accessible
+import Button from "../components/Button";
 
 function GiveBack({ onNavigate }) {
-  // Added onNavigate if you want an internal button to go home
   return (
     <section
       style={{
@@ -58,13 +57,16 @@ function GiveBack({ onNavigate }) {
           marginTop: "30px",
         }}
       >
-        {/* Placeholder for a direct donation button - you'd link this to PayPal, Stripe, etc. */}
-
         <p style={{ marginTop: "20px", fontSize: "0.9em" }}>
           Here are some links: <br />
           <a href="https://www.ymca.org/get-involved/volunteer">YMCA</a> <br />
-          <a href="https://www.volunteer.gov/s/global-search/FILTERNPS">Volunteer</a> <br />
-          <a href="https://www.nature.org/en-us/get-involved/how-to-help/volunteer/">Nature</a> 
+          <a href="https://www.volunteer.gov/s/global-search/FILTERNPS">
+            Volunteer
+          </a>{" "}
+          <br />
+          <a href="https://www.nature.org/en-us/get-involved/how-to-help/volunteer/">
+            Nature
+          </a>
         </p>
       </div>
 
@@ -78,5 +80,3 @@ function GiveBack({ onNavigate }) {
 }
 
 export default GiveBack;
-
-
